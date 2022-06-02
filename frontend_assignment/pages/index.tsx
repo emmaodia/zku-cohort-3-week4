@@ -5,8 +5,28 @@ import { providers } from "ethers"
 import Head from "next/head"
 import React from "react"
 import styles from "../styles/Home.module.css"
+import { Formik, Field, Form, FormikHelpers } from 'formik'
+import { object, number, string, ObjectSchema } from 'yup';
+
+interface Values {
+    name: string;
+    age: number;
+    address: string;
+  }
+
+interface NewGreeting {
+    greeting: string;
+  }
 
 export default function Home() {
+   
+    const schema: ObjectSchema<Values> = object({
+        name: string().defined(),
+        age: number().optional(),
+        address: string().defined()
+      });
+
+    const [state, setState] = React.useState("")
     const [logs, setLogs] = React.useState("Connect your wallet and greet!")
 
     async function greet() {
@@ -77,6 +97,69 @@ export default function Home() {
                 <div onClick={() => greet()} className={styles.button}>
                     Greet
                 </div>
+
+                <Formik
+                    initialValues={{
+                    name: '',
+                    age: 0,
+                    address: '',
+                    }}
+                    onSubmit={(
+                    values: Values,
+                    { setSubmitting }: FormikHelpers<Values>
+                    ) => {
+                    setTimeout(() => {
+                        console.log(JSON.stringify(values));
+                        setSubmitting(false);
+                    }, 500);
+                    }}
+                    >
+                    <Form>
+                        <label htmlFor="name">name</label>
+                    <Field id="name" name="name" placeholder="Enter Name" />
+
+                        <label htmlFor="age">age</label>
+                    <Field id="age" name="age" placeholder="Enter Age" type="string"/>
+
+                        <label htmlFor="address">address</label>
+                    <Field
+                        id="address"
+                        name="address"
+                        placeholder="Enter your address"
+                        type="string"
+                    />
+
+                    <button type="submit">Submit</button>
+                    </Form>
+                </Formik>
+
+                <Formik
+                    initialValues={{
+                    newGreeting: '',
+                    }}
+                    onSubmit={(
+                    values: NewGreeting,
+                    { setSubmitting }: FormikHelpers<NewGreeting>
+                    ) => {
+                    setTimeout(() => {
+                        console.log(JSON.stringify(values));
+                        setState(values.greeting)
+                        setSubmitting(false);
+                    }, 500);
+                    }}
+                    >
+                    <Form>
+                        <label htmlFor="newGreeting">name</label>
+                    <Field id="newGreeting" name="greeting" placeholder="greeting" />
+
+
+                    <button type="submit">New Greeting</button>
+
+                    <h1 className={styles.title}>{state}</h1>
+
+                    </Form>
+                </Formik>
+
             </main>
         </div>
     )

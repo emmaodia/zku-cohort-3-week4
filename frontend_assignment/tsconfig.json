@@ -6,7 +6,7 @@
         "forceConsistentCasingInFileNames": true,
         "isolatedModules": true,
         "jsx": "preserve",
-        "lib": ["dom", "es2017"],
+        "lib": ["es6","dom", "es2017"],
         "module": "esnext",
         "target": "es5",
         "moduleResolution": "node",
@@ -18,7 +18,12 @@
         "strict": true,
         "baseUrl": ".",
         "typeRoots": ["node_modules/@types", "types"],
-        "incremental": true
+        "incremental": true,
+        "allowSyntheticDefaultImports" : true,
+        "noImplicitAny": true,
+        "noImplicitThis": true,
+        "strictNullChecks": true,
+        "strictFunctionTypes": false
     },
     "include": ["next-env.d.ts", "./pages/**/*.ts", "./pages/**/*.tsx", "./test", "./tasks"],
     "files": ["./hardhat.config.ts"],
